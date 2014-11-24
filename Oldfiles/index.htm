@@ -1,0 +1,131 @@
+<html>
+	<head>
+<script>
+itemArray=new Array("Foto von Selena");
+
+
+
+activecommand="gehezu";
+useWithItem="";
+itemStart=0;
+
+
+
+function btn(picid,colr)
+{
+
+	if (colr=="R")
+	{
+		document.getElementById(activecommand).src="commands/" + activecommand + ".jpg";
+		activecommand=picid;
+		document.getElementById(picid).src="commands/" + picid + colr + ".jpg";
+		setCommand();
+	}
+	if (activecommand!=picid)
+	{
+		document.getElementById(picid).src="commands/" + picid + colr + ".jpg";
+	}
+}
+function setCommand()
+{
+			
+}
+function buildInventar(start)
+{
+
+itemStart=start;
+
+	for (i=0; i<4; i++)
+	{
+		if (i+start<itemArray.length)
+		{
+			document.getElementById("item" + (i+1)).setAttribute("name", itemArray[i+start]);
+			document.getElementById("item" + (i+1)).src='items/' + itemArray[i+start] + '.jpg';
+			
+		}
+		else
+		{
+			document.getElementById("item" + (i+1)).setAttribute("name","");
+			document.getElementById("item" + (i+1)).src="items/empty.jpg";
+		}
+	}
+}
+
+function showItemNameByNumber(nr)
+{
+
+	showItemName(document.getElementById("item" + nr).getAttribute('name'));
+}
+
+function showItemName(itemName)
+{
+	document.getElementById("ItemDisplay").innerHTML=itemName;
+}
+
+function makeCommandByNumber(nr)
+{
+	makeCommand(document.getElementById("item" + nr).getAttribute('name'));	
+}
+
+function makeCommand(itemName)
+{
+	
+}
+
+</script>
+<title>-13 Moons- ODER -Sign of Naiad- ODER -The Naiad Manuscript-</title>
+	</head>
+	<body style="margin-top:0px; margin-left:0px; background:#ffffff;" onload="btn('gehezu','R'); buildInventar(0);">
+<table style="border-spacing:0px; margin:0px; background:#000000;">
+<tr>
+<td style="border-bottom:0px none; border-top:1px solid; border-right:1px solid; border-left:1px solid; background:#53c800; color:#000000; font-size:14px; font-family:verdana;"><b>&nbsp;&nbsp;INVENTAR:&nbsp;&nbsp;</b></td>
+<td style="background:#ffffff; border-top:2px solid; border-bottom:1px solid; font-size:12px; font-family:verdana;"><b>&nbsp;?&nbsp;</td>
+<td><img id="verwende" onmouseout="btn('verwende','')" onmouseover="btn('verwende','L')" onclick="btn('verwende','R')" src="commands/verwende.jpg" alt="Verwende" height="30" /></td>
+<td><img id="benutzemit" onmouseout="btn('benutzemit','')" onmouseover="btn('benutzemit','L')" onclick="btn('benutzemit','R')" src="commands/benutzemit.jpg" alt="Benutze ... mit ...." height="30" /></td>
+<td><img id="nimm" onmouseout="btn('nimm','')" onmouseover="btn('nimm','L')" onclick="btn('nimm','R')" src="commands/nimm.jpg" alt="Nimm" height="30" /></td>
+<td><img id="untersuche" onmouseout="btn('untersuche','')" onmouseover="btn('untersuche','L')" onclick="btn('untersuche','R')" src="commands/untersuche.jpg" alt="Untersuche" height="30" /></td>
+<td><img id="zerstoere" onmouseout="btn('zerstoere','')" onmouseover="btn('zerstoere','L')" onclick="btn('zerstoere','R')" src="commands/zerstoere.jpg" alt="Zerstoere" height="30" /></td>
+<td><img id="riechean" onmouseout="btn('riechean','')" onmouseover="btn('riechean','L')" onclick="btn('riechean','R')" src="commands/riechean.jpg" alt="Rieche an" height="30" /><!--<br />--></td>
+<td><img id="oeffne" onmouseout="btn('oeffne','')" onmouseover="btn('oeffne','L')" onclick="btn('oeffne','R')" src="commands/oeffne.jpg" alt="Oeffne" height="30" /></td>
+<td><img id="schliesse" onmouseout="btn('schliesse','')" onmouseover="btn('schliesse','L')" onclick="btn('schliesse','R')" src="commands/schliesse.jpg" alt="Schließe" height="30" /></td>
+<td><img id="druecke" onmouseout="btn('druecke','')" onmouseover="btn('druecke','L')" onclick="btn('druecke','R')" src="commands/druecke.jpg" alt="Druecke" height="30" /></td>
+<td><img id="ziehe" onmouseout="btn('ziehe','')" onmouseover="btn('ziehe','L')" onclick="btn('ziehe','R')" src="commands/ziehe.jpg" alt="Ziehe" height="30" /></td>
+<td><img id="sprichmit" onmouseout="btn('sprichmit','')" onmouseover="btn('sprichmit','L')" onclick="btn('sprichmit','R')" src="commands/sprichmit.jpg" alt="Sprich mit" height="30" /></td>
+<td><img id="gehezu" onmouseout="btn('gehezu','')" onmouseover="btn('gehezu','L')" onclick="btn('gehezu','R')" src="commands/gehezu.jpg" alt="Gehe zu" height="30" /></td>
+</tr>
+</table>
+<table style="border-left:1px solid; border-left-color:#000000; background:#53c800; margin:0px; height:22px;"><tr><td style="width:350px; font-size:12px; font-family:verdana; padding-left:10px; padding-right:20px; background:#53c800;" id="ItemDisplay"></td>
+<td style="background:#000000; color:#ffffff; font-size:12px; font-family:verdana; width:793px; padding-left:10px; padding-right:10px;" id="actualcommand"><!--Benutze alter, vertrockneter Schiffscapitaenhase mit Donaudampfschifffahrtsgesellschaftskapit&auml;nskaj&uuml;tenschl&uuml;ssel--></td></tr></table>
+
+
+<span id="inventar" style="border-left:1px solid; border-right:1px solid; border-bottom:1px solid; border-color:#000000; float:left; background:#53c800; width:80px; height:510px; font-size:12px; font-family:verdana;">
+<br /><span style="font-size:12px; color:#ffffff;"><b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;^</b></span>
+<table style="height:320px; width:80px" CELLPADDING="2" CELLSPACING="2">
+<tr><td style="height:90px"><img id="item1" name="g" src="items/empty.jpg" onmouseover="showItemNameByNumber(1)" onmouseout="showItemName('')" onclick="makeCommandByNumber(1)"></td></tr>
+<tr><td style="height:90px"><img id="item2" name="g" src="items/empty.jpg" onmouseover="showItemNameByNumber(2)" onmouseout="showItemName('')" onclick="makeCommandByNumber(2)"></td></tr>
+<tr><td style="height:90px"><img id="item3" name="g" src="items/empty.jpg" onmouseover="showItemNameByNumber(3)" onmouseout="showItemName('')"onclick="makeCommandByNumber(3)"></td></tr>
+<tr><td style="height:90px"><img id="item4" name="g" src="items/empty.jpg" onmouseover="showItemNameByNumber(4)" onmouseout="showItemName('')" onclick="makeCommandByNumber(4)"></td></tr>
+</tr>
+</table>
+<span style="font-size:12px; color:#ffffff;"><b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;v</b></span>
+<br>
+</span>
+	
+<span style="float:left;"><object ="application/x-shockwave-flash"
+ classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000"
+ codebase="http://download.macromedia.com/pub/shockwave/
+cabs/flash/swflash.cab#version=6,0,79,0"
+ id="beta" width="1159" height="552">
+ <param name="movie" value="beta.swf">
+ <param name="bgcolor" value="#FFFFFF">
+ <param name="quality" value="high">
+ <param name="loop" value="false">
+ <param name="menu" value="false">
+ <param name="swliveconnect" value="true">
+ 
+ <embed type="application/x-shockwave-flash"
+ pluginspage="http://www.macromedia.com/go/getflashplayer" name="beta" src="beta.swf" bgcolor="#FFFFFF" quality="high"
+ loop="false" menu="false" swLiveConnect="true" width="1159" height="552"></embed>
+</object></span>
+	</body>
+</html>

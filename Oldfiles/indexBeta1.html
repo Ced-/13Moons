@@ -1,0 +1,693 @@
+<html>
+	<head>
+	
+
+
+</style>
+<script>
+itemArray=new Array("Foto von Selena");
+
+
+
+activecommand="gehezu";
+useWithItem="";
+useWithItemInvent=0;
+itemInvent=0;
+DisplayCommandText="";
+itemStart=0;
+itemsClickable=true;
+commandsClickable=true;
+
+commandTextLocked=false;
+
+
+/*function setItemsUnclickable()
+{
+}
+*/
+function btn(picid,colr)
+{
+
+	if (colr=="R" && commandsClickable)
+	{
+		document.getElementById(activecommand).src="commands/" + activecommand + ".jpg";
+		activecommand=picid;
+		document.getElementById(picid).src="commands/" + picid + colr + ".jpg";
+		itemInvent=1;
+		setCommand(activecommand);
+	}
+	if (activecommand!=picid && commandsClickable)
+	{
+		document.getElementById(picid).src="commands/" + picid + colr + ".jpg";
+	}
+}
+
+function setCommand(cmd)
+{
+		useWithItem="";
+		activecommand=cmd;
+		itemsClickable=true;
+		commandTextLocked=false;
+		//Room clickable machen
+
+	if (activecommand=="benutzemit")
+	{
+		DisplayCommandText="Benutze ";
+		//Room nicht clickable machen!
+		//DIV über Flash legen
+	}
+	else if (activecommand=="gehezu")
+	{
+		DisplayCommandText="Gehe zu "
+		itemsClickable=false;
+	}
+	else if (activecommand=="verwende")
+	{
+		DisplayCommandText="Verwende ";
+	}
+	else if (activecommand=="nimm")
+	{
+		DisplayCommandText="Nimm ";
+		itemsClickable=false;
+	}
+	else if (activecommand=="untersuche")
+	{
+		DisplayCommandText="Untersuche ";
+	}
+	else if (activecommand=="zerstoere")
+	{
+		DisplayCommandText="Zerstöre ";
+	}
+	else if (activecommand="schliesse")
+	{
+		DisplayCommandText="Schließe ";
+	}
+	else if (activecommand=="oeffne")
+	{
+		DisplayCommandText="Öffne ";
+	}
+	else if (activecommand=="druecke")
+	{
+		DisplayCommandText="Drücke ";
+	}
+	else if (activecommand=="ziehe")
+	{
+		DisplayCommandText="Ziehe ";
+	}
+	else if (activecommand=="riechean")
+	{
+		DisplayCommandText="Rieche an ";
+	}
+	else if (activecommand=="sprichmit")
+	{
+		DisplayCommandText="Sprich mit ";
+		itemsClickable=false;
+	}
+changeCommandText("");		
+}
+
+
+function buildInventar(start)
+{
+
+itemStart=start;
+
+	for (i=0; i<4; i++)
+	{
+		if (i+start<itemArray.length)
+		{
+			document.getElementById("item" + (i+1)).setAttribute("name", itemArray[i+start]);
+			document.getElementById("item" + (i+1)).src='items/' + itemArray[i+start] + '.png';
+			
+		}
+		else
+		{
+			document.getElementById("item" + (i+1)).setAttribute("name","");
+			document.getElementById("item" + (i+1)).src="items/empty.png";
+		}
+	}
+}
+
+function showItemNameByNumber(nr)
+{
+
+	showItemName(document.getElementById("item" + nr).getAttribute('name'));
+	if (itemsClickable)
+	{
+		
+		//DisplayCommandText=DisplayCommandText + " " + document.getElementById("item" + nr).getAttribute('name');
+		changeCommandText(document.getElementById("item" + nr).getAttribute('name'));
+	}
+}
+
+function showItemName(itemName)
+{
+	document.getElementById("ItemDisplay").innerHTML=itemName;
+	changeCommandText("");
+}
+
+function changeCommandText(additionalText)
+{
+	if (!commandTextLocked)
+	{
+		document.getElementById("CommandDisplay").innerHTML=DisplayCommandText + additionalText;
+	}
+	
+}
+
+function makeCommandByNumber(nr)
+{
+	if (itemsClickable)
+	{
+		makeCommand(document.getElementById("item" + nr).getAttribute('name'));	
+	}
+}
+
+function lockCommandText()
+{
+		commandTextLocked=true;
+}
+
+function resetCommandText(cmd)
+{
+		if (cmd!="")
+		{
+			setCommand("gehezu");
+		}
+		else
+		{
+			setCommand(activecommand);
+		}
+		itemInvent=0;
+		useWithItem="";
+		useWithItemInvent=0;
+}
+
+
+function makeCommand(itemName)
+{
+	if (activecommand=="benutzemit" && useWithItem=="")
+	{
+		//ROOM UNCLICKABLE MACHEN!!
+		useWithItem=itemName;
+		DisplayCommandText="Benutze " + useWithItem + " mit ";
+		changeCommandText("");
+		if (itemInvent==1)
+		{
+			useWithItemInvent=1;
+			itemInvent=0;
+		}
+	}
+	else if (activecommand=="benutzemit" && useWithItem!="")
+	{
+		DisplayCommandText="Benutze " + useWithItem + " mit " + itemName;
+		changeCommandText("");
+//		lockCommandText();
+		useWithFunction(itemName);
+	}
+	else if (activecommand=="gehezu")
+	{
+		
+	}
+	else if (activecommand=="verwende")
+	{
+		DisplayCommandText="Verwende " + itemName;
+		changeCommandText("");
+//		lockCommandText();
+		applyFunction(itemName);
+	}
+	else if (activecommand=="nimm")
+	{
+		DisplayCommandText="Nimm " + itemName;
+		changeCommandText("");
+//		lockCommandText();
+		takeFunction(itemName);
+	}
+	else if (activecommand=="untersuche")
+	{
+		DisplayCommandText="Untersuche " + itemName;
+		changeCommandText("");
+//		lockCommandText();
+		examineFunction(itemName);
+	}
+	else if (activecommand=="zerstoere")
+	{
+		DisplayCommandText="Zerstöre " + itemName;
+		changeCommandText("");
+//		lockCommandText();
+		destroyFunction(itemName);
+	}
+	else if (activecommand="schliesse")
+	{
+		DisplayCommandText="Schließe " + itemName;
+		changeCommandText("");
+//		lockCommandText();
+		closeFunction(itemName);
+	}
+	else if (activecommand=="oeffne")
+	{	
+		DisplayCommandText="Öffne " + itemName;
+		changeCommandText("");
+		//		lockCommandText();
+		openFunction(itemName);
+	}
+	else if (activecommand=="druecke")
+	{	
+		DisplayCommandText="Drücke " + itemName;
+		changeCommandText("");
+//		lockCommandText();
+		pressFunction(itemName);
+	}
+	else if (activecommand=="ziehe")
+	{	
+		DisplayCommandText="Ziehe " + itemName;
+		changeCommandText("");
+//		lockCommandText();
+		pullFunction(itemName);
+	}
+	else if (activecommand=="riechean")
+	{	
+		DisplayCommandText="Rieche an " + itemName;
+		changeCommandText("");
+//		lockCommandText();
+		smellFunction(itemName);
+	}
+	else if (activecommand=="sprichmit")
+	{	
+		DisplayCommandText="Sprich mit " + itemName;
+		changeCommandText("");
+//		lockCommandText();
+		talktoFunction(itemName);
+	}
+}
+
+function addToInventory(itemName)
+{
+	itemArray.push(itemName);
+	buildInventar(0);		
+}
+
+function setDialogText(dialogText, person, mood, dialogfinish)
+{
+lockCommandText();
+setCommandsClickable(false);
+
+itemsClickable=false;
+	//COMMANDSCLICKABLE=FALSE
+	//ROOMCLICKABLE=FALSE
+	document.getElementById("person").src="Characters/" + person + "/" + mood + ".jpg";
+	document.getElementById("dialog").innerHTML=dialogText + "<br/><font color=green><a style=\"color:#00ff00;\" href=\"javascript:resetDialogText();\">" + dialogfinish + "</a>";
+	//NACH BESTÄTIGUNG (extra funktion schreiben!!!)::::
+	
+	//document.getElementById("dialog").innerHTML="";
+	//document.getElementById("person").src="Characters/Seth/normal.jpg";
+	
+
+	//COMMANDSCLICKABLE=true
+	//ROOMCLICKABLE=true
+	
+}
+
+function resetDialogText()
+{
+	document.getElementById("dialog").innerHTML="";
+	document.getElementById("person").src="Characters/Seth/normal.jpg";
+	setCommandsClickable(true);
+	itemsClickable=true;
+	resetCommandText("");
+}
+function setCommandsClickable(yesOrNo)
+{
+	if (!yesOrNo)
+	{
+		btn("verwende","G");
+		btn("benutzemit","G");
+		btn("nimm","G");
+		btn("untersuche","G");
+		btn("zerstoere","G");
+		btn("riechean","G");
+		btn("oeffne","G");
+		btn("schliesse","G");
+		btn("druecke","G");
+		btn("ziehe","G");
+		btn("sprichmit","G");
+		btn("gehezu","G");
+		commandsClickable=false;
+
+	}
+	if (yesOrNo)
+	{
+		commandsClickable=true;
+		btn("verwende","");
+		btn("benutzemit","");
+		btn("nimm","");
+		btn("untersuche","");
+		btn("zerstoere","");
+		btn("riechean","");
+		btn("oeffne","");
+		btn("schliesse","");
+		btn("druecke","");
+		btn("ziehe","");
+		btn("sprichmit","");
+		btn("gehezu","");
+		resetCommandText("");
+	}
+}
+
+function getCommand()
+{
+	if (!commandTextLocked)
+	{
+		return activeCommand;
+	}
+	else
+	{
+		return "locked";
+	}
+}
+
+
+function mover(moveCommand)
+{
+	if (moveCommand=="up")
+	{
+	}
+	if (moveCommand=="left")
+	{
+	}
+	if (moveCommand=="down")
+	{
+	}
+	if (moveCommand=="right")
+	{
+	}
+	//Jeweils ein Intervall starten und darin die Mover Funktion im Actioscript aufrufen.
+	if (moveCommand=="stop")
+	{
+	//Intervall beenden
+	}
+}
+
+
+/************UNTERSUCHE*******************/
+function examineFunction(itemName)
+{
+
+defaultMessage="Ich untersuche... - Untersuchung abgeschlossen. Ergebnis: " + itemName;
+defaultMood="normal";
+defaultPerson="Seth";
+//wenn itemName nicht im Array ist:
+	//goto itemName (flashfunktion)
+	//testen ob nah genug dran an itemName (flashfunktion).
+	//->>Wenn nein: 
+		defaultMessage="Ich müsste etwas näher rangehen, dann kann ichs nochmal probieren...";
+	
+	///////////////
+//////////////
+		
+//....Aktion (je nach Gegenstand)
+//message(defaultMessage); (flashfunktion);
+	if (itemName=="Sofa")
+	{
+		defaultMessage="Es sieht bequem aus. Nur... das Muster..... es hat etwas Abstoßenedes und Anziehendes zugleich.";
+	}
+	if (itemName=="Foto von Selena")
+	{
+		defaultMessage="Das Foto von Selena.. der 19. August 1983 ist der Tag, an dem dieser Engel geboren wurde... Und jetzt... ist sie wie vom Erdboden verschluckt. WO ist sie? Was ist das nur passiert, verdammt? Ich muss mich beeilen und sie finden!.";
+		defaultMood="unhappy";
+	}
+	if (itemName=="Sessel")
+	{
+		defaultMessage="Hm... da liegt Stück Papier auf auf dem Sessel... Ich werd das mal nehmen.";
+		addToInventory("Papier von Selenas Sessel");
+	}
+	if (itemName=="Computertisch")
+	{
+		defaultMessage="Habe ich hiermit untersucht. Und nun?";
+	}
+	if (itemName=="Teleskop")
+	{
+		defaultMessage="Hm...ob ich es mal VERWENDEN sollte?";
+	}
+setDialogText(defaultMessage, defaultPerson, defaultMood, "weiter");
+
+
+}
+/************\\UNTERSUCHE*******************/
+
+
+
+/************ZERSTÖRE*******************/
+function destroyFunction(itemName)
+{
+defaultMessage="YEAH! DESTROY IT ALL!!!....... Vielleicht ja später.";
+//wenn itemName nicht im Array ist:
+	//goto itemName (flashfunktion)
+	//testen ob nah genug dran an itemName (flashfunktion).
+	//->>Wenn nein: 
+		defaultMessage="Ich müsste etwas näher rangehen, dann kann ichs nochmal probieren...".
+		resetCommandText("gehezu");
+	///////////////
+//////////////
+		
+//....Aktion (je nach Gegenstand)
+//message(defaultMessage); (flashfunktion);
+resetCommandText("");
+}
+/************\\ZERSTÖRE*******************/
+
+
+
+/************SCHLIEßEN*******************/
+function closeFunction(itemName)
+{
+defaultMessage="Nein. Und damit ist dieses Kapitel GESCHLOSSEN!";
+//wenn itemName nicht im Array ist:
+	//goto itemName (flashfunktion)
+	//testen ob nah genug dran an itemName (flashfunktion).
+	//->>Wenn nein: 
+		defaultMessage="Ich müsste etwas näher rangehen, dann kann ichs nochmal probieren...".
+		resetCommandText("gehezu");
+	///////////////
+//////////////
+		
+//....Aktion (je nach Gegenstand) (flashfunktion)
+//message(defaultMessage); (flashfunktion);
+resetCommandText("");
+}
+/************\\SCHLIEßEN*******************/
+
+
+/************ÖFFNEN*******************/
+function openFunction(itemName)
+{
+defaultMessage="Sesam öffne dich. Nö... tut sich nix.";
+//wenn itemName nicht im Array ist:
+	//goto itemName (flashfunktion)
+	//testen ob nah genug dran an itemName (flashfunktion).
+	//->>Wenn nein: 
+		defaultMessage="Ich müsste etwas näher rangehen, dann kann ichs nochmal probieren...".
+		resetCommandText("gehezu");
+	///////////////
+//////////////
+		
+//....Aktion (je nach Gegenstand)
+//message(defaultMessage); (flashfunktion);
+resetCommandText("");
+}
+/************\\ÖFFNEN*******************/
+
+
+/************DRÜCKEN*******************/
+function pressFunction(itemName)
+{
+defaultMessage="Ja - Wer möchte nicht mal gedrückt werden? Komm her und lass dich drücken, " + itemName + ".";
+//wenn itemName nicht im Array ist:
+	//goto itemName (flashfunktion)
+	//testen ob nah genug dran an itemName (flashfunktion).
+	//->>Wenn nein: 
+		defaultMessage="Ich müsste etwas näher rangehen, dann kann ichs nochmal probieren...".
+		resetCommandText("gehezu");
+	///////////////
+//////////////
+		
+//....Aktion (je nach Gegenstand)
+//message(defaultMessage); (flashfunktion);
+resetCommandText("");
+}
+/************\\DRÜCKEN*******************/
+
+
+/************ZIEHEN*******************/
+function pullFunction(itemName)
+{
+defaultMessage="ZIIIIIIIIIIIIIEEEEEEEEEEEEEEEEEEEEEEEEEEH!  ... ähm... nein... doch nicht.";
+//wenn itemName nicht im Array ist:
+	//goto itemName (flashfunktion)
+	//testen ob nah genug dran an itemName (flashfunktion).
+	//->>Wenn nein: 
+		defaultMessage="Ich müsste etwas näher rangehen, dann kann ichs nochmal probieren...".
+		resetCommandText("gehezu");
+	///////////////
+//////////////
+		
+//....Aktion (je nach Gegenstand)
+//message(defaultMessage); (flashfunktion);
+resetCommandText("");
+}
+/************\\ZIEHEN*******************/
+
+
+/************RIECHEN*******************/
+function smellFunction(itemName)
+{
+defaultMessage="HM. Das riecht.... stark... nach...  " + itemName + ". Wer hätte das gedacht?!";
+//wenn itemName nicht im Array ist:
+	//goto itemName (flashfunktion)
+	//testen ob nah genug dran an itemName (flashfunktion).
+	//->>Wenn nein: 
+		defaultMessage="Ich müsste etwas näher rangehen, dann kann ichs nochmal probieren...".
+		resetCommandText("gehezu");
+	///////////////
+//////////////
+		
+//....Aktion (je nach Gegenstand)
+//message(defaultMessage); (flashfunktion);
+resetCommandText("");
+}
+/************\\RIECHEN*******************/
+
+
+/************REDEN*******************/
+function talktoFunction(itemName)
+{
+defaultMessage="Ja, wirklich? Oh, hallo " + itemName + ". Was treibst du so, altes Haus..?? ..... .... ... . Keine Antwort. Schon irgendwie unhöflich, was?";
+//wenn itemName nicht im Array ist:
+	//goto itemName (flashfunktion)
+	//testen ob nah genug dran an itemName (flashfunktion).
+	//->>Wenn nein: 
+		defaultMessage="Ich müsste etwas näher rangehen, dann kann ichs nochmal probieren...".
+		resetCommandText("gehezu");
+	///////////////
+//////////////
+		
+//....Aktion (je nach Gegenstand)
+//message(defaultMessage); (flashfunktion);
+resetCommandText("");
+}
+/************\\REDEN*******************/
+
+
+
+
+</script>
+<title>-13 Moons- ODER -Sign of Naiad- ODER -The Naiad Manuscript-</title>
+	</head>
+	<body style="margin-top:2px; margin-left:2px; background:#ffffff;" onload="btn('gehezu','R'); buildInventar(0);">
+
+
+<div style="position:absolute; left:2px; top:2px;">
+<!--<div id="inventar" style="border-left:0px solid; border-right:1px solid; border-bottom:0px solid; border-color:#000000; position:absolute; left:0px; top:1px; background:#53c800; width:80px; height:511px; font-size:12px; font-family:verdana;">
+<br /><span style="font-size:12px; color:#ffffff;"><b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;^</b></span>
+<table style="height:320px; width:80px" CELLPADDING="2" CELLSPACING="2">
+<tr><td style="height:90px"><img id="item1" name="g" src="items/empty.jpg" onmouseover="showItemNameByNumber(1)" onmouseout="showItemName('')" onclick="makeCommandByNumber(1)"></td></tr>
+<tr><td style="height:90px"><img id="item2" name="g" src="items/empty.jpg" onmouseover="showItemNameByNumber(2)" onmouseout="showItemName('')" onclick="makeCommandByNumber(2)"></td></tr>
+<tr><td style="height:90px"><img id="item3" name="g" src="items/empty.jpg" onmouseover="showItemNameByNumber(3)" onmouseout="showItemName('')" onclick="makeCommandByNumber(3)"></td></tr>
+<tr><td style="height:90px"><img id="item4" name="g" src="items/empty.jpg" onmouseover="showItemNameByNumber(4)" onmouseout="showItemName('')" onclick="makeCommandByNumber(4)"></td></tr>
+</tr>
+</table>
+
+
+
+<span style="font-size:12px; color:#ffffff;"><b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;v</b></span>
+<br>
+</div>-->
+	
+<div style="z-index:87; position:absolute; top:2px; left:1px;"><object ="application/x-shockwave-flash"
+ classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000"
+ codebase="http://download.macromedia.com/pub/shockwave/
+cabs/flash/swflash.cab#version=6,0,79,0"
+ id="beta" width="1006" height="444">
+ <param name="movie" value="beta_sm_newStyle1.swf">
+ <param name="bgcolor" value="#FFFFFF">
+ <param name="quality" value="high">
+ <param name="loop" value="false">
+ <param name="menu" value="false">
+ <param name="swliveconnect" value="true">
+ 
+ <embed type="application/x-shockwave-flash"
+ pluginspage="http://www.macromedia.com/go/getflashplayer" name="beta" src="beta_sm_newStyle1.swf" bgcolor="#FFFFFF" quality="high"
+ loop="false" menu="false" swLiveConnect="true" width="1006" height="444"></embed>
+</object></div>
+
+</div>
+
+
+
+<div style="position:absolute; left:3px; top:449px; height:27px; z-index:88">
+<table style="border-spacing:0px; margin:0px; height:27px; width:1006px; background:#000000;" CELLSPACING="0">
+<tr>
+<!--<td style="border-bottom:0px none; border-top:1px solid; border-right:1px solid; border-left:0px solid; background:#53c800; color:#000000; font-size:14px; font-family:verdana;"><b>&nbsp;&nbsp;INVENTAR:&nbsp;&nbsp;</b></td>
+<td style="background:#ffffff; border-top:2px solid; border-bottom:2px solid; font-size:12px; font-family:verdana;"><b>&nbsp;?&nbsp;</td>-->
+<td><img height="28" id="verwende" onmouseout="btn('verwende','')" onmouseover="btn('verwende','L')" onclick="btn('verwende','R')" src="commands/verwende.jpg" alt="Verwende" height="30" /></td>
+<td><img height="28" id="benutzemit" onmouseout="btn('benutzemit','')" onmouseover="btn('benutzemit','L')" onclick="btn('benutzemit','R')" src="commands/benutzemit.jpg" alt="Benutze ... mit ...." height="30" /></td>
+<td><img height="28" id="nimm" onmouseout="btn('nimm','')" onmouseover="btn('nimm','L')" onclick="btn('nimm','R')" src="commands/nimm.jpg" alt="Nimm" height="30" /></td>
+<td><img height="28" id="untersuche" onmouseout="btn('untersuche','')" onmouseover="btn('untersuche','L')" onclick="btn('untersuche','R')" src="commands/untersuche.jpg" alt="Untersuche" height="30" /></td>
+<td><img height="28" id="zerstoere" onmouseout="btn('zerstoere','')" onmouseover="btn('zerstoere','L')" onclick="btn('zerstoere','R')" src="commands/zerstoere.jpg" alt="Zerstoere" height="30" /></td>
+<td><img height="28" id="riechean" onmouseout="btn('riechean','')" onmouseover="btn('riechean','L')" onclick="btn('riechean','R')" src="commands/riechean.jpg" alt="Rieche an" height="30" /><!--<br />--></td>
+<td><img height="28" id="oeffne" onmouseout="btn('oeffne','')" onmouseover="btn('oeffne','L')" onclick="btn('oeffne','R')" src="commands/oeffne.jpg" alt="Oeffne" height="30" /></td>
+<td><img height="28" id="schliesse" onmouseout="btn('schliesse','')" onmouseover="btn('schliesse','L')" onclick="btn('schliesse','R')" src="commands/schliesse.jpg" alt="Schließe" height="30" /></td>
+<td><img height="28" id="druecke" onmouseout="btn('druecke','')" onmouseover="btn('druecke','L')" onclick="btn('druecke','R')" src="commands/druecke.jpg" alt="Druecke" height="30" /></td>
+<td><img height="28" id="ziehe" onmouseout="btn('ziehe','')" onmouseover="btn('ziehe','L')" onclick="btn('ziehe','R')" src="commands/ziehe.jpg" alt="Ziehe" height="30" /></td>
+<td><img height="28" id="sprichmit" onmouseout="btn('sprichmit','')" onmouseover="btn('sprichmit','L')" onclick="btn('sprichmit','R')" src="commands/sprichmit.jpg" alt="Sprich mit" height="30" /></td>
+<td><img height="28" id="gehezu" onmouseout="btn('gehezu','')" onmouseover="btn('gehezu','L')" onclick="btn('gehezu','R')" src="commands/gehezu.jpg" alt="Gehe zu" height="30" /></td>
+</tr>
+</table>
+<!--</div>
+<div style="position:absolute; left:0px; top:31px;">-->
+<!--
+<div id="dialog" style="z-index:90; padding-bottom:2px; padding-top:2px; padding-left:6px; padding-right:3px; font-size:12px; font-family:verdana; border:1px solid; position:absolute; top:0px; left:0px; height:50px; color:#ffffff; background:#000000; width:1237px; overflow-y:scroll; visibility:hidden;">
+Mein Foto von Selina... Am 5.5.1986 kam dieser Engel zur Welt....... *seufz*. Ich MUSS herausfinden was mit ihr passiert ist..!fefefoe ewpofjwepfoj efjpeofjp pofjp qefjqeofkqeüfp üf eofkqüf qepfüq foj üpk füpqkfüpqwfüpqf qefüefk üpqwkpwk qwüfkef üpe foejg poef eowfj eipfjq fpoqwopk qwüp oo qwpf qewof kqefjjqwp f qw fqlkqfifj fwqfifjw <br>bede<br>efefefe<br>dhasodihwidhi<br>dshiudhqwiuh<br>hdushdi
+</div>-->
+<div style="position:absolute; left:0px; top:27px; height:40px">
+<table style="border-left:0px solid; width:1006px; border-left-color:#000000; background:#53c800; margin:0px; height:40px;"><tr>
+<td style="height:18px; background:#000000; color:#ffffff; font-size:12px; font-family:verdana; width:1006px; padding-left:10px; padding-right:10px;" id="CommandDisplay">&nbsp;</td>
+<tr><td style="height:18px; width:1006px; font-size:12px; font-family:verdana; padding-left:10px; padding-right:0px; background:#53c800;"><table><tr><td style="width:200px"><div style="float:left; width:200px; font-size:14px;" id="dialogowner"><b>Seth:</b></div></td><td style="width:350px; text-align:right;"><div style="float:left; text-align:right; font-size:14px; width:350px;"><b>STEUEUNG & INVENTAR:</b></div><td style="background:#000000; width:408px;"><div id="ItemDisplay" style="background:#000000; padding-left:9px; padding-right:6px; width:408px; float:right; text-align:right; color:#ffffff; font-size:12px; font-family:verdana;">&nbsp;</div></td></tr></table></td>
+</tr>
+</table>
+</div>
+<div style="position:absolute; left:0px; top:72px;">
+<table style="border-left:0px solid; border-left-color:#000000; background:#53c800; margin:0px; width:1006px; height:95px;"><tr>
+
+<tr style="height:95px;">
+<td style="height:95px; font-size:12px; opacity: 0.94;filter: alpha(opacity = 94); font-family:verdana; color:#ffffff; width:60px; font-size:12px; font-family:verdana; padding-left:6px; padding-right:6px;"><div style="height:95px;"><img height="95" src="Characters/Seth/normal.jpg" id="person"></div></td>
+<td style="opacity: 0.94;filter: alpha(opacity = 94); height:95px; font-size:12px; font-family:verdana; color:#ffffff; width:490px; background:#000000; font-size:12px; font-family:verdana; padding-left:6px; padding-right:9px;"><div id="dialog" style="height:95px; overflow-y:scroll;"></div></td>
+<td style="height:95px; font-size:12px; font-family:verdana; color:#ffffff; width:120px; font-size:12px; font-family:verdana; padding-left:6px; padding-right:6px;">
+	<table><tr>
+	<td><img src="controlelements/left.png" id="goleft" onmousedown="document.getElementById('goleft').src='controlelements/leftpressed.png';mover('left');" onmouseup="document.getElementById('goleft').src='controlelements/left.png';mover('stop');"></td>
+	<td><img src="controlelements/up.png" id="goup" onmousedown="document.getElementById('goup').src='controlelements/uppressed.png';mover('up');" onmouseup="document.getElementById('goup').src='controlelements/up.png';mover('stop');"><br><br>
+	<img src="controlelements/down.png" id="godown" onmousedown="document.getElementById('godown').src='controlelements/downpressed.png';mover('down');" onmouseup="document.getElementById('godown').src='controlelements/down.png';mover('stop');"></td>
+	<td><img src="controlelements/right.png" id="goright" onmousedown="document.getElementById('goright').src='controlelements/rightpressed.png';mover('right');" onmouseup="document.getElementById('goright').src='controlelements/right.png';mover('stop');">
+	</td></tr></table>
+</td>
+<td style="height:95px; font-size:12px; font-family:verdana; color:#ffffff; width:316px;font-size:12px; font-family:verdana; padding-left:6px; padding-right:6px;">
+<table style="height:92px; width:80px" CELLPADDING="2" CELLSPACING="2">
+<tr><td style="height:90px"><</td>
+<td style="height:90px"><img id="item1" name="g" src="items/empty.png" onmouseover="showItemNameByNumber(1)" onmouseout="showItemName('')" onclick="makeCommandByNumber(1)"></td>
+<td style="height:90px"><img id="item2" name="g" src="items/empty.png" onmouseover="showItemNameByNumber(2)" onmouseout="showItemName('')" onclick="makeCommandByNumber(2)"></td>
+<td style="height:90px"><img id="item3" name="g" src="items/empty.png" onmouseover="showItemNameByNumber(3)" onmouseout="showItemName('')" onclick="makeCommandByNumber(3)"></td>
+<td style="height:90px"><img id="item4" name="g" src="items/empty.png" onmouseover="showItemNameByNumber(4)" onmouseout="showItemName('')" onclick="makeCommandByNumber(4)"></td>
+<td style="height:90px">></td>
+</tr>
+</table>
+</td>
+</tr>
+</table>
+</div>
+</div>
+
+
+
+
+	</body>
+</html>
